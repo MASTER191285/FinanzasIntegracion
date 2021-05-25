@@ -1,0 +1,16 @@
+/* your styles go here */
+.errorMsg{color: #cc0000;margin-bottom: 10px}
+
+#txtObservaciones{
+	resize: none;
+	width: 50%;
+		
+}
+
+#comprobante {
+	border-radius: 5px;
+	cursor: pointer;
+	transition: 0.3s;
+  }
+
+  th { white-space: nowrap; }
