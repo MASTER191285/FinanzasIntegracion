@@ -47,6 +47,24 @@ try {
 }
 /*Fin Procedimientos Almacenados*/
 
+
+/* Api Indicadores Economicos */
+$apiUrl = 'https://mindicador.cl/api';
+//Es necesario tener habilitada la directiva allow_url_fopen para usar file_get_contents
+if ( ini_get('allow_url_fopen') ) {
+    $json = file_get_contents($apiUrl);
+} else {
+    //De otra forma utilizamos cURL
+    $curl = curl_init($apiUrl);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    $json = curl_exec($curl);
+    curl_close($curl);
+} 
+$dailyIndicators = json_decode($json);
+$valorIPC = $dailyIndicators->ipc->valor;
+//echo 'El valor actual de la UF es $' . $dailyIndicators->uf->valor;
+/*Fin Api Indicadores Economicos */
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -69,6 +87,55 @@ try {
       <div class="page-header">
         <div class="container-fluid">
           <h2 class="h5 no-margin-bottom">Dashboard Finanzas</h2>
+          <!--Update Indicadores-->
+          <div class="row">
+          <div class="col-xl-2 col-md-2 col-6">
+                <div class="statistic-block block">
+                  <div class="icon"><i class="fa fa-money" aria-hidden="true"></i></div>
+                  <div class="name"><strong class="text-uppercase">Valor de la UF</strong><span>Día Actual</span>
+                    <hr>
+                    <div class="number dashtext-7"><?php echo '$' . number_format($dailyIndicators->uf->valor, 2, ",", ".") ?></div>
+                  </div>
+                </div>
+            </div>    
+            <div class="col-xl-2 col-md-2 col-6">
+                <div class="statistic-block block">
+                  <div class="icon"><i class="fa fa-money" aria-hidden="true"></i></div>
+                  <div class="name"><strong class="text-uppercase">Dólar Observado</strong><span>Día Actual</span>
+                    <hr>
+                    <div class="number dashtext-7"><?php echo '$' . number_format($dailyIndicators->dolar->valor, 2, ",", ".") ?></div>
+                  </div>
+                </div>
+            </div>    
+            <div class="col-xl-2 col-md-2 col-6">
+                <div class="statistic-block block">
+                  <div class="icon"><i class="fa fa-money" aria-hidden="true"></i></div>
+                  <div class="name"><strong class="text-uppercase">Valor Euro</strong><span>Día Actual</span>
+                    <hr>
+                    <div class="number dashtext-7"><?php echo '$' . number_format($dailyIndicators->euro->valor, 2, ",", ".")  ?></div>
+                  </div>
+                </div>
+            </div>   
+            <div class="col-xl-2 col-md-2 col-6">
+                <div class="statistic-block block">
+                  <div class="icon"><i class="fa fa-money" aria-hidden="true"></i></div>
+                  <div class="name"><strong class="text-uppercase">Valor UTM</strong><span>Día Actual</span>
+                    <hr>
+                    <div class="number dashtext-7"><?php echo '$' .number_format($dailyIndicators->utm->valor, 0, ",", ".")  ?></div>
+                  </div>
+                </div>
+            </div>      
+            <div class="col-xl-2 col-md-2 col-6">
+                <div class="statistic-block block">
+                  <div class="icon"><i class="fa fa-money" aria-hidden="true"></i></div>
+                  <div class="name"><strong class="text-uppercase">Valor IPC</strong><span>Día Actual</span>
+                    <hr>
+                    <div class="number dashtext-7"><?php echo '$' . number_format($valorIPC,2,",",".") ?></div>
+                  </div>
+                </div>
+            </div>                                            
+            </div>
+            <!--Update Indicadores--> 
         </div>
       </div>
       <section class="no-padding-top no-padding-bottom">
